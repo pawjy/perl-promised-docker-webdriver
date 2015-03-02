@@ -10,14 +10,6 @@ use Promised::Docker::WebDriver;
 use Web::UserAgent::Functions qw(http_post_data);
 use AnyEvent::HTTPD;
 
-my $httpd_port = Promised::Docker::WebDriver::_find_port;
-my $Text = 'abc'.$httpd_port.rand;
-my $httpd = AnyEvent::HTTPD->new (port => $httpd_port);
-$httpd->reg_cb ('' => sub {
-  my ($httpd, $req) = @_;
-  $req->respond ({content => ['text/plain', $Text]});
-});
-
 sub post ($$) {
   my ($url, $json) = @_;
   return Promise->new (sub {
@@ -58,7 +50,16 @@ for my $browser (qw(chrome chromium firefox)) {
       })->then (sub {
         my $json = $_[0];
         my $sid = $json->{sessionId};
-        my $host = $server->get_docker_host_hostname . ':' . $httpd_port;
+
+        my $httpd_port = Promised::Docker::WebDriver::_find_port;
+        my $text = 'abc'.$httpd_port.rand;
+        my $httpd = AnyEvent::HTTPD->new (host => $server->get_docker_host_hostname_for_host, port => $httpd_port);
+        $httpd->reg_cb ('' => sub {
+          my ($httpd, $req) = @_;
+          $req->respond ({content => ['text/plain', $text]});
+        });
+
+        my $host = $server->get_docker_host_hostname_for_container . ':' . $httpd_port;
         return post ("$url/session/$sid/url", {
           url => qq<http://$host/>,
         })->then (sub {
@@ -69,7 +70,8 @@ for my $browser (qw(chrome chromium firefox)) {
         })->then (sub {
           my $value = $_[0]->{value};
           test {
-            is $value, $Text;
+            is $value, $text;
+            $httpd->stop;
           } $c;
         });
       });
@@ -86,8 +88,6 @@ for my $browser (qw(chrome chromium firefox)) {
 }
 
 run_tests;
-
-$httpd->stop;
 
 =head1 LICENSE
 

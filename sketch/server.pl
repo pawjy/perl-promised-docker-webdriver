@@ -77,7 +77,7 @@ $server->start->then (sub {
   })->then (sub {
     my $json = $_[0];
     my $sid = $json->{sessionId};
-    my $host = $server->get_docker_host_hostname . ':' . $httpd_port;
+    my $host = $server->get_docker_host_hostname_for_container . ':' . $httpd_port;
     return post ("$url/session/$sid/url", {
       url => qq<http://$host/>,
     })->then (sub {
