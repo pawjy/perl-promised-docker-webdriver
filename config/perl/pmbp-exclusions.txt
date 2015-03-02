@@ -1,0 +1,4 @@
+- "../../modules/promise" tests
+- "../../modules/promised-command" tests
+- "../../t_deps/modules/test-x1" tests
+- "../../t_deps/modules/web-ua" tests wsse oauth basic anyeventsocks
