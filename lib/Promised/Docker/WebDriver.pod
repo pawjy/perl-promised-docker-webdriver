@@ -1,0 +1,132 @@
+=head1 NAME
+
+Promised::Docker::WebDriver - Headless browsers with WebDriver in Docker
+
+=head1 SYNOPSIS
+
+  use Promised::Docker::WebDriver;
+  $server = Promised::Docker::WebDriver->chrome;
+  $server->start->then (sub {
+    $url = $server->get_url_prefix;
+    POST qq<$url/session> ...;
+  })->then (sub {
+    return $server->stop;
+  });
+
+=head1 DESCRIPTION
+
+The C<Promised::Docker::WebDriver> module provides a L<Promise>-aware
+wrapper API for docker images containing headless Web browsers
+exposing WebDriver Web APIs.
+
+=head1 METHODS
+
+Following methods are available:
+
+=over 4
+
+=item $server = Promised::Docker::WebDriver->chrome
+
+Create a new instance for the docker image
+"wakaba/docker-chromedriver:stable", which contains ChromeDriver with
+Chrome stable channel browser. (See
+<https://github.com/wakaba/docker-chromedriver> and
+<https://registry.hub.docker.com/u/wakaba/docker-chromedriver/>.)
+
+=item $server = Promised::Docker::WebDriver->chromium
+
+Create a new instance for the docker image
+"wakaba/docker-chromedriver:chromium", which contains ChromeDriver
+with Chromium browser. (See
+<https://github.com/wakaba/docker-chromedriver> and
+<https://registry.hub.docker.com/u/wakaba/docker-chromedriver/>.)
+
+=item $server = Promised::Docker::WebDriver->firefox
+
+Create a new instance for the docker image
+"wakaba/docker-firefoxdriver:stable", which contains FirefoxDriver
+with Firefox stable release browser. (See
+<https://github.com/wakaba/docker-firefoxdriver> and
+<https://registry.hub.docker.com/u/wakaba/docker-firefoxdriver/>.)
+
+=item $promise = $server->start
+
+Return a L<Promise>, which is resolved after the WebDriver API server
+is ready to accept HTTP requests.  The promise is rejected if the
+server failed to start.
+
+=item $promise = $server->stop
+
+Return a L<Promise>, which is resolved after the Docker container is
+stopped.
+
+This method must be invoked after the L<start> method is resolved.
+
+=item $time = $server->start_timeout
+
+=item $server->start_timeout ($time)
+
+Get or set the timeout for the C<start>, i.e. the maximum time
+interval between the completion of the C<docker run -d> command and
+when the server becomes ready to accept requests.
+
+This method must be invoked before the C<start> method is invoked.
+
+=item $int = $server->get_port
+
+Return the port number the server is listening.  This method must be
+invoked after the C<start> promise is resolved.
+
+A random unused port is assigned for the server.
+
+=item $string = $server->get_hostname
+
+Return the host name the server is listening.  This method must be
+invoked after the C<start> promise is resolved.
+
+In the current version, it is always C<127.0.0.1>.
+
+=item $string = $server->get_host
+
+Return the host name, followed by C<:>, followed by the port the
+server is listening.  This method must be invoked after the C<start>
+promise is resolved.
+
+=item $url = $server->get_url_prefix
+
+Return the URL prefix for the server.  For example, the complete URL
+for the C</session> end point is the value returned by this method
+followed by C</session>.  This method must be invoked after the
+C<start> promise is resolved.
+
+=back
+
+=head1 DEPENDENCY
+
+The module requires Perl 5.10 or later.
+
+The module requires L<Promise>
+<https://github.com/wakaba/perl-promise>, L<Promised::Command>
+<https://github.com/wakaba/perl-promised-command>, and L<AnyEvent>.
+
+Obviously, Docker is also required.
+
+=head1 SEE ALSO
+
+Docker <https://www.docker.com/>.
+
+The WebDriver Wire Protocol
+<https://code.google.com/p/selenium/wiki/JsonWireProtocol>.
+
+=head1 AUTHOR
+
+Wakaba <wakaba@suikawiki.org>.
+
+=head1 LICENSE
+
+Copyright 2015 Wakaba <wakaba@suikawiki.org>.
+
+This library is free software; you can redistribute it and/or modify
+it under the same terms as Perl itself.
+
+=cut
