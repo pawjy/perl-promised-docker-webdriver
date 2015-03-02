@@ -1,0 +1,24 @@
+machine:
+  services:
+    - docker
+dependencies:
+  override:
+    - make deps test-deps:
+        timeout: 600
+    - docker info
+    - docker pull wakaba/docker-chromedriver:stable
+    - docker pull wakaba/docker-chromedriver:chromium
+    - docker pull wakaba/docker-firefoxdriver:stable
+test:
+  override:
+    - make test :
+        timeout: 600
+deployment:
+  nightly:
+    branch: nightly
+    commands:
+      - curl -s -S --request POST --header "Authorization:token $GITHUB_ACCESS_TOKEN" --header "Content-Type:application/json" --data-binary "{\"base\":\"master\",\"head\":\"`git rev-parse HEAD`\",\"commit_message\":\"auto-merge nightly into master\"}" "https://api.github.com/repos/wakaba/perl-promised-docker-webdriver/merges"
+  staging:
+    branch: staging
+    commands:
+      - curl -s -S --request POST --header "Authorization:token $GITHUB_ACCESS_TOKEN" --header "Content-Type:application/json" --data-binary "{\"base\":\"master\",\"head\":\"`git rev-parse HEAD`\",\"commit_message\":\"auto-merge staging into master\"}" "https://api.github.com/repos/wakaba/perl-promised-docker-webdriver/merges"

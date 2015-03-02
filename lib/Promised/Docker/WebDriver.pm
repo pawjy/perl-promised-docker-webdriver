@@ -142,6 +142,12 @@ sub start ($) {
     ]);
     $cmd->stdout (\($self->{container_id} = ''));
 
+    $self->{running} = 1;
+    for my $sig (qw(INT TERM QUIT)) {
+      $self->{signal_handlers}->{$sig} = AE::signal $sig => sub {
+        $self->stop;
+      };
+    }
     return $cmd->run->then (sub {
       return $cmd->wait;
     })->then (sub {
@@ -163,6 +169,8 @@ sub stop ($) {
     return $cmd->wait;
   })->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
+    delete $self->{signal_handlers};
+    delete $self->{running};
   });
 } # stop
 
@@ -186,6 +194,14 @@ sub get_url_prefix ($) {
 sub get_docker_host_hostname ($) {
   return $_[0]->{docker_host_ipaddr} // die "|run| not yet invoked";
 } # get_docker_host_hostname
+
+sub DESTROY ($) {
+  my $self = $_[0];
+  if ($self->{running} and
+      defined $self->{start_pid} and $self->{start_pid} == $$) {
+    $self->stop;
+  }
+} # DESTROY
 
 1;
 
