@@ -10,3 +10,6 @@
 [submodule "t_deps/modules/web-ua"]
 	path = t_deps/modules/web-ua
 	url = git://github.com/wakaba/perl-web-useragent-functions
+[submodule "t_deps/modules/json-ps"]
+	path = t_deps/modules/json-ps
+	url = git://github.com/wakaba/perl-json-ps

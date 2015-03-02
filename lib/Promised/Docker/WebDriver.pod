@@ -8,7 +8,10 @@ Promised::Docker::WebDriver - Headless browsers with WebDriver in Docker
   $server = Promised::Docker::WebDriver->chrome;
   $server->start->then (sub {
     $url = $server->get_url_prefix;
-    POST qq<$url/session> ...;
+    $host = $server->get_docker_host_hostname;
+    ...
+    POST qq<$url/session/url>, {url => qq<http://$host:8080/>};
+    ...
   })->then (sub {
     return $server->stop;
   });
@@ -98,6 +101,14 @@ Return the URL prefix for the server.  For example, the complete URL
 for the C</session> end point is the value returned by this method
 followed by C</session>.  This method must be invoked after the
 C<start> promise is resolved.
+
+=item $string = $server->get_docker_host_hostname
+
+Return the host name of the Docker host (the host where the Perl
+application is running) used within the Docker container.  This host
+name can be used to construct the URL specified in the WebDriver API
+to let the browser access the server running on the host.  This method
+must be invoked after the C<start> promise is resolved.
 
 =back
 

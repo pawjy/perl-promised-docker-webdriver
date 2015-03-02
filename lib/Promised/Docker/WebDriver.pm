@@ -7,10 +7,11 @@ use Promise;
 use Promised::Command;
 
 sub chrome ($) {
+  ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
   return bless {
     docker_image => 'wakaba/docker-chromedriver:stable',
     driver_command => '/cd-bare',
-    driver_args => ['--port=%PORT%', '--whitelisted-ips=0.0.0.0/0'],
+    driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
   }, $_[0];
 } # chrome
@@ -19,7 +20,7 @@ sub chromium ($) {
   return bless {
     docker_image => 'wakaba/docker-chromedriver:chromium',
     driver_command => '/cd-bare',
-    driver_args => ['--port=%PORT%', '--whitelisted-ips=0.0.0.0/0'],
+    driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
   }, $_[0];
 } # chromium
@@ -124,22 +125,30 @@ sub start ($) {
     s/%PORT%/$self->{port}/g;
   }
 
-  ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
-
-  my $cmd = Promised::Command->new ([
-    'docker', 'run', '-t', '-d',
-    '-p', '127.0.0.1:'.$self->{port}.':'.$self->{port},
-    $self->{docker_image},
-    $self->{driver_command}, @args,
-  ]);
-  $cmd->stdout (\($self->{container_id} = ''));
-
-  return $cmd->run->then (sub {
-    return $cmd->wait;
-  })->then (sub {
+  my $ip_cmd = Promised::Command->new (['sh', '-c', q{ip route | awk '/docker0/ { print $NF }'}]);
+  $ip_cmd->stdout (\my $ip);
+  return $ip_cmd->run->then (sub { return $ip_cmd->wait })->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
-    chomp $self->{container_id};
-    return _wait_server $self->get_hostname, $self->get_port, $self->start_timeout;
+    chomp $ip if defined $ip;
+    die "Can't get docker0's IP address" unless defined $ip and $ip =~ /\A[0-9.]+\z/;
+    $self->{docker_host_ipaddr} = $ip;
+  })->then (sub {
+    my $cmd = Promised::Command->new ([
+      'docker', 'run', '-t', '-d',
+      '--add-host=dockerhost:' . $self->{docker_host_ipaddr},
+      '-p', '127.0.0.1:'.$self->{port}.':'.$self->{port},
+      $self->{docker_image},
+      $self->{driver_command}, @args,
+    ]);
+    $cmd->stdout (\($self->{container_id} = ''));
+
+    return $cmd->run->then (sub {
+      return $cmd->wait;
+    })->then (sub {
+      die $_[0] unless $_[0]->exit_code == 0;
+      chomp $self->{container_id};
+      return _wait_server $self->get_hostname, $self->get_port, $self->start_timeout;
+    });
   });
 } # start
 
@@ -162,6 +171,7 @@ sub get_port ($) {
 } # get_port
 
 sub get_hostname ($) {
+  die "|run| not yet invoked" unless defined $_[0]->{port};
   return '127.0.0.1';
 } # get_hostname
 
@@ -172,6 +182,10 @@ sub get_host ($) {
 sub get_url_prefix ($) {
   return 'http://' . $_[0]->get_host . $_[0]->{path_prefix};
 } # get_url_prefix
+
+sub get_docker_host_hostname ($) {
+  return $_[0]->{docker_host_ipaddr} // die "|run| not yet invoked";
+} # get_docker_host_hostname
 
 1;
 
