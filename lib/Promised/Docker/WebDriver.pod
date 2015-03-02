@@ -102,13 +102,23 @@ for the C</session> end point is the value returned by this method
 followed by C</session>.  This method must be invoked after the
 C<start> promise is resolved.
 
-=item $string = $server->get_docker_host_hostname
+=item $string = $server->get_docker_host_hostname_for_container
 
 Return the host name of the Docker host (the host where the Perl
 application is running) used within the Docker container.  This host
 name can be used to construct the URL specified in the WebDriver API
 to let the browser access the server running on the host.  This method
 must be invoked after the C<start> promise is resolved.
+
+=item $string = $server->get_docker_host_hostname_for_host
+
+Return the host name (or an IP address, in fact) of the Docker host
+(the host where the Perl application is running) used in the Docker
+host.  This host name can be used to specify the interface the server
+process listens to only serve for the Docker containers (rather than
+specifying C<0.0.0.0> to allow accesses from all available
+interfaces).  This method must be invoked after the C<start> promise
+is resolved.
 
 =back
 

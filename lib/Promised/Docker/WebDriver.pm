@@ -191,11 +191,14 @@ sub get_url_prefix ($) {
   return 'http://' . $_[0]->get_host . $_[0]->{path_prefix};
 } # get_url_prefix
 
-sub get_docker_host_hostname ($) {
+sub get_docker_host_hostname_for_container ($) {
   die "|run| not yet invoked" unless defined $_[0]->{port};
   return 'dockerhost';
-  #return $_[0]->{docker_host_ipaddr} // die "|run| not yet invoked";
-} # get_docker_host_hostname
+} # get_docker_host_hostname_for_container
+
+sub get_docker_host_hostname_for_host ($) {
+  return $_[0]->{docker_host_ipaddr} // die "|run| not yet invoked";
+} # get_docker_host_hostname_for_host
 
 sub DESTROY ($) {
   my $self = $_[0];
