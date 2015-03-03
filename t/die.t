@@ -60,6 +60,60 @@ test {
   });
 } n => 2;
 
+test {
+  my $c = shift;
+  my $cmd = Promised::Command->new (['perl', '-e', q{
+    use AnyEvent;
+    use Promised::Docker::WebDriver;
+    our $server = Promised::Docker::WebDriver->chrome;
+    my $cv = AE::cv;
+    $server->start->then (sub {
+      warn "\ncid=@{[$server->{container_id}]}\n";
+      $cv->send;
+    }, sub {
+      exit 1;
+    });
+    $cv->recv;
+  }]);
+  $cmd->stderr (\my $stderr);
+  $cmd->run->then (sub {
+    return $cmd->wait->then (sub {
+      my $run = $_[0];
+      test {
+        ok $run->exit_code;
+      } $c;
+      return Promise->new (sub {
+        my ($ok, $ng) = @_;
+        my $time = 0;
+        my $timer; $timer = AE::timer 0, 0.5, sub {
+          if (defined $stderr and $stderr =~ /^cid=\w+$/m) {
+            $ok->();
+            undef $timer;
+          } else {
+            $time += 0.5;
+            if ($time > 30) {
+              $ng->("timeout");
+              undef $timer;
+            }
+          }
+        };
+      });
+    });
+  })->then (sub {
+    $stderr =~ /^cid=(\w+)$/m;
+    my $cid = $1;
+    test {
+      ok not `docker ps --no-trunc | grep \Q$cid\E`;
+    } $c;
+  })->catch (sub {
+    warn $_[0];
+    test { ok 0 } $c;
+  })->then (sub {
+    done $c;
+    undef $c;
+  });
+} n => 2;
+
 for my $signal (qw(INT TERM QUIT)) {
   test {
     my $c = shift;
