@@ -5,6 +5,7 @@ our $VERSION = '1.0';
 use AnyEvent;
 use Promise;
 use Promised::Command;
+use Promised::Command::Signals;
 
 sub chrome ($) {
   ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
@@ -143,11 +144,9 @@ sub start ($) {
     $cmd->stdout (\($self->{container_id} = ''));
 
     $self->{running} = 1;
-    for my $sig (qw(INT TERM QUIT)) {
-      $self->{signal_handlers}->{$sig} = AE::signal $sig => sub {
-        $self->stop;
-      };
-    }
+    my $stop_code = sub { return $self->stop };
+    $self->{signal_handlers}->{$_} = Promised::Command::Signals->add_handler
+        ($_ => $stop_code) for qw(INT TERM QUIT);
     return $cmd->run->then (sub {
       return $cmd->wait;
     })->then (sub {
@@ -160,8 +159,7 @@ sub start ($) {
 
 sub stop ($) {
   my $self = $_[0];
-  return Promise->reject ("Not started yet")
-      unless defined $self->{container_id};
+  return Promise->resolve unless defined $self->{container_id};
 
   my $cmd = Promised::Command->new (['docker', 'kill', $self->{container_id}]);
   $cmd->stdout (\my $stdout);
