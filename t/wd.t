@@ -85,6 +85,18 @@ for my $browser (qw(chrome chromium firefox)) {
       undef $c;
     });
   } n => 1, name => [$browser, 'access local server'];
+
+  test {
+    my $c = shift;
+    my $server = Promised::Docker::WebDriver->$browser;
+    $server->stop->then (sub {
+      test {
+        ok 1;
+        done $c;
+        undef $c;
+      } $c;
+    });
+  } n => 1, name => 'stop before start';
 }
 
 run_tests;
