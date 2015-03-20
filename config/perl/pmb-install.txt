@@ -13,7 +13,7 @@ AnyEvent::Util
 Crypt::SSLeay~0.72
 HTTP::Daemon~6.01
 Getopt::Long~2.45
-parent~0.231
+parent~0.232
 Term::ANSIColor~4.03
 AnyEvent~7.08
 Exporter::Lite~0.06
@@ -45,7 +45,7 @@ Net::HTTP~6.07
 IO::Socket::SSL~2.012
 URI~1.67
 AnyEvent::HTTPD~0.93
-Carp~1.35
+Carp~1.36
 HTTP::Date~6.02
 LWP::UserAgent~6.13
 Mozilla::CA~20141217
