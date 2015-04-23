@@ -30,7 +30,7 @@ Path::Class~0.35
 IO::Compress::Bzip2~2.068
 common::sense~3.73
 WWW::RobotRules~6.02
-Scalar::Util~1.41
+Scalar::Util~1.42
 URI::Escape~3.31
 File::Spec~3.47
 LWP::MediaTypes~6.02
