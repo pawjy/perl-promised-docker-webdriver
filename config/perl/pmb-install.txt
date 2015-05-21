@@ -41,7 +41,7 @@ HTML::Entities~3.69
 Socket~2.019
 Algorithm::Diff~1.1903
 Path::Tiny~0.068
-Net::HTTP~6.07
+Net::HTTP~6.09
 IO::Socket::SSL~2.015
 URI~1.67
 AnyEvent::HTTPD~0.93
