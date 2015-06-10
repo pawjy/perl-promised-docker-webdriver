@@ -34,7 +34,7 @@ Scalar::Util~1.42
 URI::Escape~3.31
 File::Spec~3.47
 LWP::MediaTypes~6.02
-Encode::Locale~1.04
+Encode::Locale~1.05
 HTTP::Negotiate~6.01
 LWP::Protocol::https~6.06
 HTML::Entities~3.69
