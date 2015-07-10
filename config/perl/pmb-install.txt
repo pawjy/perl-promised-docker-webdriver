@@ -4,7 +4,7 @@ Capture::Tiny~0.30
 Pod::Usage~1.67
 Pod::Text~3.18
 Object::Event~1.23
-HTTP::Status~6.07
+HTTP::Status~6.08
 Encode~2.75
 IO::HTML~1.001
 File::Listing~6.04
@@ -44,7 +44,6 @@ Path::Tiny~0.070
 Net::HTTP~6.09
 IO::Socket::SSL~2.016
 URI~1.68
-HTTP::Headers::Util~6.03
 AnyEvent::HTTPD~0.93
 Carp~1.36
 HTTP::Date~6.02
