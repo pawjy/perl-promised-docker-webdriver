@@ -44,7 +44,7 @@ Algorithm::Diff~1.1903
 Path::Tiny~0.072
 Net::HTTP~6.09
 IO::Socket::SSL~2.016
-URI~1.68
+URI~1.69
 AnyEvent::HTTPD~0.93
 Carp~1.36
 HTTP::Date~6.02
