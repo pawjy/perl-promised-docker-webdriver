@@ -23,7 +23,7 @@ AnyEvent::HTTP~2.22
 Canary::Stability~2006
 Compress::Raw::Zlib~2.068
 Test::More~1.001014
-Text::Diff~1.42
+Text::Diff~1.43
 Compress::Raw::Bzip2~2.068
 Test::Differences~0.63
 File::Temp~0.2304
