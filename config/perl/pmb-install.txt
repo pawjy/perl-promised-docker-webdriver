@@ -49,6 +49,6 @@ AnyEvent::HTTPD~0.93
 Carp~1.36
 HTTP::Date~6.02
 LWP::UserAgent~6.13
-Mozilla::CA~20141217
+Mozilla::CA~20150826
 MIME::Base64~3.15
 HTML::Tagset~3.20
