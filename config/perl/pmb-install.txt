@@ -5,7 +5,7 @@ Pod::Usage~1.67
 Pod::Text~3.18
 Object::Event~1.23
 HTTP::Status~6.11
-Encode~2.77
+Encode~2.78
 IO::HTML~1.001
 File::Listing~6.04
 Test::Builder~1.001014
