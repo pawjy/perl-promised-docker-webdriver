@@ -12,7 +12,7 @@ Test::Builder~1.001014
 AnyEvent::Util
 Crypt::SSLeay~0.72
 HTTP::Daemon~6.01
-Getopt::Long~2.47
+Getopt::Long~2.48
 parent~0.234
 Term::ANSIColor~4.03
 AnyEvent~7.11
