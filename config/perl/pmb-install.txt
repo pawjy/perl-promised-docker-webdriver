@@ -46,7 +46,7 @@ Net::HTTP~6.09
 IO::Socket::SSL~2.020
 URI~1.69
 AnyEvent::HTTPD~0.93
-Carp~1.36
+Carp~1.38
 HTTP::Date~6.02
 LWP::UserAgent~6.13
 Mozilla::CA~20150826
