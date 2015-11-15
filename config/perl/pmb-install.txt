@@ -33,7 +33,7 @@ common::sense~3.74
 WWW::RobotRules~6.02
 Scalar::Util~1.42
 URI::Escape~3.31
-File::Spec~3.47
+File::Spec~3.59
 LWP::MediaTypes~6.02
 Encode::Locale~1.05
 HTTP::Negotiate~6.01
