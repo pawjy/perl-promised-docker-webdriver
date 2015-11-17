@@ -41,7 +41,7 @@ LWP::Protocol::https~6.06
 HTML::Entities~3.69
 Socket~2.020
 Algorithm::Diff~1.1903
-Path::Tiny~0.072
+Path::Tiny~0.076
 Net::HTTP~6.09
 IO::Socket::SSL~2.020
 URI~1.69
