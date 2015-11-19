@@ -33,13 +33,13 @@ common::sense~3.74
 WWW::RobotRules~6.02
 Scalar::Util~1.42
 URI::Escape~3.31
-File::Spec~3.59
+File::Spec~3.60
 LWP::MediaTypes~6.02
 Encode::Locale~1.05
 HTTP::Negotiate~6.01
 LWP::Protocol::https~6.06
 HTML::Entities~3.69
-Socket~2.020
+Socket~2.021
 Algorithm::Diff~1.1903
 Path::Tiny~0.076
 Net::HTTP~6.09
