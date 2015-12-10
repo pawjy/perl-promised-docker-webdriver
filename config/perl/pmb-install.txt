@@ -43,7 +43,7 @@ Socket~2.021
 Algorithm::Diff~1.1903
 Path::Tiny~0.076
 Net::HTTP~6.09
-IO::Socket::SSL~2.021
+IO::Socket::SSL~2.022
 URI~1.69
 AnyEvent::HTTPD~0.93
 Carp~1.38
