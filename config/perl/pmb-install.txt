@@ -2,7 +2,7 @@ Net::SSLeay~1.72
 ExtUtils::Constant~0.23
 Capture::Tiny~0.36
 Pod::Usage~1.68
-Pod::Text~4.06
+Pod::Text~4.07
 Object::Event~1.23
 HTTP::Status~6.11
 Encode~2.82
@@ -14,7 +14,7 @@ Crypt::SSLeay~0.72
 HTTP::Daemon~6.01
 Getopt::Long~2.48
 parent~0.234
-Term::ANSIColor~4.04
+Term::ANSIColor~4.05
 AnyEvent~7.12
 Exporter::Lite~0.08
 Data::Dumper~2.154
