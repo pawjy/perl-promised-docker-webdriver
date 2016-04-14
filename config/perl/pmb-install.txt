@@ -1,11 +1,11 @@
-Net::SSLeay~1.72
+Net::SSLeay~1.74
 ExtUtils::Constant~0.23
 Capture::Tiny~0.36
 Pod::Usage~1.68
 Pod::Text~4.07
 Object::Event~1.23
 HTTP::Status~6.11
-Encode~2.83
+Encode~2.84
 IO::HTML~1.001
 File::Listing~6.04
 Test::Builder~1.001014
@@ -40,9 +40,9 @@ HTML::Entities~3.69
 LWP::Protocol::https~6.06
 Socket~2.021
 Algorithm::Diff~1.1903
-Path::Tiny~0.084
+Path::Tiny~0.086
 Net::HTTP~6.09
-IO::Socket::SSL~2.024
+IO::Socket::SSL~2.025
 URI~1.71
 AnyEvent::HTTPD~0.93
 Carp~1.38
