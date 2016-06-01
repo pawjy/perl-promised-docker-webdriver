@@ -1,6 +1,6 @@
 Net::SSLeay~1.74
 ExtUtils::Constant~0.23
-Capture::Tiny~0.40
+Capture::Tiny~0.42
 Pod::Usage~1.69
 Pod::Text~4.07
 Object::Event~1.23
