@@ -26,7 +26,7 @@ HTTP::Negotiate~6.01
 HTTP::Status~6.11
 IO::Compress::Bzip2~2.069
 IO::HTML~1.001
-IO::Socket::SSL~2.033
+IO::Socket::SSL~2.034
 LWP::MediaTypes~6.02
 LWP::Protocol::https~6.06
 LWP::UserAgent~6.15
