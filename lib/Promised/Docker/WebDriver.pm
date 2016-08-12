@@ -10,7 +10,7 @@ use Promised::Command::Signals;
 sub chrome ($) {
   ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
   return bless {
-    docker_image => 'wakaba/docker-chromedriver:stable',
+    docker_image => 'quay.io/wakaba/docker-chromedriver:stable',
     driver_command => '/cd-bare',
     driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
@@ -19,7 +19,7 @@ sub chrome ($) {
 
 sub chromium ($) {
   return bless {
-    docker_image => 'wakaba/docker-chromedriver:chromium',
+    docker_image => 'quay.io/wakaba/docker-chromedriver:chromium',
     driver_command => '/cd-bare',
     driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
@@ -28,7 +28,7 @@ sub chromium ($) {
 
 sub firefox ($) {
   return bless {
-    docker_image => 'wakaba/docker-firefoxdriver:stable',
+    docker_image => 'quay.io/wakaba/docker-firefoxdriver:stable',
     driver_command => '/fx-port',
     driver_args => ['%PORT%'],
     path_prefix => '/wd/hub',
@@ -210,7 +210,7 @@ sub DESTROY ($) {
 
 =head1 LICENSE
 
-Copyright 2015 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2016 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
