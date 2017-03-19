@@ -6,9 +6,8 @@ dependencies:
     - make deps test-deps:
         timeout: 600
     - docker info
-    - docker pull quay.io/wakaba/chromedriver:stable
-    - docker pull quay.io/wakaba/chromedriver:chromium
-    - docker pull quay.io/wakaba/firefoxdriver:stable
+    - docker pull quay.io/wakaba/chromedriver:chromium && docker pull quay.io/wakaba/chromedriver:stable && docker pull quay.io/wakaba/firefoxdriver:stable :
+        timeout: 600
 test:
   override:
     - make test :
