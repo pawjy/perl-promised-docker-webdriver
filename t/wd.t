@@ -49,7 +49,7 @@ for my $browser (qw(chrome chromium firefox)) {
         },
       })->then (sub {
         my $json = $_[0];
-        my $sid = $json->{sessionId};
+        my $sid = $json->{sessionId} // $json->{value}->{sessionId};
 
         my $httpd_port = Promised::Docker::WebDriver::_find_port;
         my $text = 'abc'.$httpd_port.rand;
