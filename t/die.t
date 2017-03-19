@@ -57,6 +57,7 @@ test {
     use Promised::Docker::WebDriver;
     our $server = Promised::Docker::WebDriver->chrome;
     my $cv = AE::cv;
+    $server->start_timeout (500);
     $server->start->then (sub {
       warn "\ncid=@{[$server->{container_id}]}\n";
       $cv->send;
@@ -103,6 +104,7 @@ for my $signal (qw(INT TERM QUIT)) {
       my $sig1 = AE::signal INT => sub { exit 1 };
       my $sig2 = AE::signal QUIT => sub { exit 1 };
       my $sig3 = AE::signal TERM => sub { exit 1 };
+      $server->start_timeout (500);
       $server->start->then (sub {
         print STDERR "\ncid=@{[$server->{container_id}]}\n";
       }, sub {
