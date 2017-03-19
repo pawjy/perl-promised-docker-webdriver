@@ -32,7 +32,7 @@ for my $browser (qw(chrome chromium firefox)) {
       done $c;
       undef $c;
     });
-  } n => 1, name => [$browser, 'status'];
+  } n => 1, name => [$browser, 'status'], timeout => 600;
 }
 
 run_tests;

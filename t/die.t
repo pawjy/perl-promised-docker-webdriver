@@ -58,7 +58,7 @@ test {
     done $c;
     undef $c;
   });
-} n => 2;
+} n => 2, timeout => 600;
 
 test {
   my $c = shift;
@@ -112,7 +112,7 @@ test {
     done $c;
     undef $c;
   });
-} n => 2;
+} n => 2, timeout => 600;
 
 for my $signal (qw(INT TERM QUIT)) {
   test {
@@ -168,7 +168,7 @@ for my $signal (qw(INT TERM QUIT)) {
       done $c;
       undef $c;
     });
-  } n => 1, name => [$signal];
+  } n => 1, name => [$signal], timeout => 600;
 }
 
 run_tests;

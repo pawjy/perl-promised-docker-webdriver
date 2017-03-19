@@ -84,7 +84,7 @@ for my $browser (qw(chrome chromium firefox)) {
       done $c;
       undef $c;
     });
-  } n => 1, name => [$browser, 'access local server'];
+  } n => 1, name => [$browser, 'access local server'], timeout => 600;
 
   test {
     my $c = shift;
@@ -96,7 +96,7 @@ for my $browser (qw(chrome chromium firefox)) {
         undef $c;
       } $c;
     });
-  } n => 1, name => 'stop before start';
+  } n => 1, name => 'stop before start', timeout => 600;
 }
 
 run_tests;
