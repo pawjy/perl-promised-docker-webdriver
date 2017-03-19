@@ -41,6 +41,7 @@ for my $browser (qw(chrome chromium firefox)) {
   test {
     my $c = shift;
     my $server = Promised::Docker::WebDriver->$browser;
+    $server->start_timeout (500);
     $server->start->then (sub {
       my $url = $server->get_url_prefix;
       return post ("$url/session", {

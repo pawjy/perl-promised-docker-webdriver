@@ -14,6 +14,7 @@ test {
     use Promised::Docker::WebDriver;
     my $server = Promised::Docker::WebDriver->chrome;
     my $cv = AE::cv;
+    $server->start_timeout (500);
     $server->start->then (sub {
       warn "\ncid=@{[$server->{container_id}]}\n";
       exit 0;
