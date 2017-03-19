@@ -11,6 +11,7 @@ for my $browser (qw(chrome chromium firefox)) {
   test {
     my $c = shift;
     my $server = Promised::Docker::WebDriver->$browser;
+    $server->start_timeout (500);
     $server->start->then (sub {
       my $url = $server->get_url_prefix;
       return Promise->new (sub {
@@ -26,13 +27,19 @@ for my $browser (qw(chrome chromium firefox)) {
               $ok->();
             };
       });
+    })->catch (sub {
+      my $error = $_[0];
+      test {
+        ok 0, "No rejection";
+        is $error, undef, "Caught rejection";
+      } $c;
     })->then (sub {
       return $server->stop;
     })->then (sub {
       done $c;
       undef $c;
     });
-  } n => 1, name => [$browser, 'status'];
+  } n => 1, name => [$browser, 'status'], timeout => 600;
 }
 
 run_tests;

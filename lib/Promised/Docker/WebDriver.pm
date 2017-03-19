@@ -10,7 +10,7 @@ use Promised::Command::Signals;
 sub chrome ($) {
   ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
   return bless {
-    docker_image => 'quay.io/wakaba/docker-chromedriver:stable',
+    docker_image => 'quay.io/wakaba/chromedriver:stable',
     driver_command => '/cd-bare',
     driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
@@ -19,7 +19,7 @@ sub chrome ($) {
 
 sub chromium ($) {
   return bless {
-    docker_image => 'quay.io/wakaba/docker-chromedriver:chromium',
+    docker_image => 'quay.io/wakaba/chromedriver:chromium',
     driver_command => '/cd-bare',
     driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
@@ -28,10 +28,10 @@ sub chromium ($) {
 
 sub firefox ($) {
   return bless {
-    docker_image => 'quay.io/wakaba/docker-firefoxdriver:stable',
+    docker_image => 'quay.io/wakaba/firefoxdriver:stable',
     driver_command => '/fx-port',
     driver_args => ['%PORT%'],
-    path_prefix => '/wd/hub',
+    path_prefix => '',
   }, $_[0];
 } # firefox
 
@@ -79,7 +79,7 @@ sub firefox ($) {
             on_eof => sub { $ng->(); undef $hdl; },
           );
           $hdl->push_read (chunk => 4, sub { $ok->(); $_[0]->destroy; });
-          $hdl->push_write ("HEAD / HTTP/1.0\x0D\x0A\x0D\x0A");
+          $hdl->push_write ("HEAD / HTTP/1.1\x0D\x0AHost: $hostname:$port\x0D\x0A\x0D\x0A");
         };
       });
     };

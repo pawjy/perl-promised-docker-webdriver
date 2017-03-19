@@ -41,6 +41,7 @@ for my $browser (qw(chrome chromium firefox)) {
   test {
     my $c = shift;
     my $server = Promised::Docker::WebDriver->$browser;
+    $server->start_timeout (500);
     $server->start->then (sub {
       my $url = $server->get_url_prefix;
       return post ("$url/session", {
@@ -49,7 +50,7 @@ for my $browser (qw(chrome chromium firefox)) {
         },
       })->then (sub {
         my $json = $_[0];
-        my $sid = $json->{sessionId};
+        my $sid = $json->{sessionId} // $json->{value}->{sessionId};
 
         my $httpd_port = Promised::Docker::WebDriver::_find_port;
         my $text = 'abc'.$httpd_port.rand;
@@ -84,7 +85,7 @@ for my $browser (qw(chrome chromium firefox)) {
       done $c;
       undef $c;
     });
-  } n => 1, name => [$browser, 'access local server'];
+  } n => 1, name => [$browser, 'access local server'], timeout => 600;
 
   test {
     my $c = shift;
@@ -96,7 +97,7 @@ for my $browser (qw(chrome chromium firefox)) {
         undef $c;
       } $c;
     });
-  } n => 1, name => 'stop before start';
+  } n => 1, name => 'stop before start', timeout => 600;
 }
 
 run_tests;
