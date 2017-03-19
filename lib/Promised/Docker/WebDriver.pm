@@ -79,7 +79,7 @@ sub firefox ($) {
             on_eof => sub { $ng->(); undef $hdl; },
           );
           $hdl->push_read (chunk => 4, sub { $ok->(); $_[0]->destroy; });
-          $hdl->push_write ("HEAD / HTTP/1.0\x0D\x0A\x0D\x0A");
+          $hdl->push_write ("HEAD / HTTP/1.1\x0D\x0AHost: $hostname:$port\x0D\x0A\x0D\x0A");
         };
       });
     };
