@@ -4,6 +4,7 @@ use Path::Tiny;
 use lib glob path (__FILE__)->parent->parent->child ('t_deps/modules/*/lib');
 use Test::More;
 use Test::X1;
+use Promised::Flow;
 use Promised::Command;
 
 test {
@@ -28,22 +29,9 @@ test {
       test {
         ok $run->exit_code;
       } $c;
-      return Promise->new (sub {
-        my ($ok, $ng) = @_;
-        my $time = 0;
-        my $timer; $timer = AE::timer 0, 0.5, sub {
-          if (defined $stderr and $stderr =~ /^cid=\w+$/m) {
-            $ok->();
-            undef $timer;
-          } else {
-            $time += 0.5;
-            if ($time > 30) {
-              $ng->("timeout");
-              undef $timer;
-            }
-          }
-        };
-      });
+      return promised_wait_until {
+        return (defined $stderr and $stderr =~ /^cid=\w+$/m);
+      } timeout => 500;
     });
   })->then (sub {
     $stderr =~ /^cid=(\w+)$/m;
@@ -53,6 +41,7 @@ test {
     } $c;
   })->catch (sub {
     warn $_[0];
+    warn "STDERR: |$stderr|";
     test { ok 0 } $c;
   })->then (sub {
     done $c;
@@ -82,22 +71,9 @@ test {
       test {
         ok $run->exit_code;
       } $c;
-      return Promise->new (sub {
-        my ($ok, $ng) = @_;
-        my $time = 0;
-        my $timer; $timer = AE::timer 0, 0.5, sub {
-          if (defined $stderr and $stderr =~ /^cid=\w+$/m) {
-            $ok->();
-            undef $timer;
-          } else {
-            $time += 0.5;
-            if ($time > 30) {
-              $ng->("timeout");
-              undef $timer;
-            }
-          }
-        };
-      });
+      return promised_wait_until {
+        return (defined $stderr and $stderr =~ /^cid=\w+$/m);
+      } timeout => 500;
     });
   })->then (sub {
     $stderr =~ /^cid=(\w+)$/m;
@@ -107,6 +83,7 @@ test {
     } $c;
   })->catch (sub {
     warn $_[0];
+    warn "STDERR: |$stderr|";
     test { ok 0 } $c;
   })->then (sub {
     done $c;
@@ -135,22 +112,9 @@ for my $signal (qw(INT TERM QUIT)) {
     }]);
     $cmd->stderr (\my $stderr);
     $cmd->run->then (sub {
-      return Promise->new (sub {
-        my ($ok, $ng) = @_;
-        my $time = 0;
-        my $timer; $timer = AE::timer 0, 0.5, sub {
-          if (defined $stderr and $stderr =~ /^cid=\w+$/m) {
-            $ok->();
-            undef $timer;
-          } else {
-            $time += 0.5;
-            if ($time > 10) {
-              $ng->("timeout: [$stderr]");
-              undef $timer;
-            }
-          }
-        };
-      });
+      return promised_wait_until {
+        return (defined $stderr and $stderr =~ /^cid=\w+$/m);
+      } timeout => 500;
     })->then (sub {
       return $cmd->send_signal ($signal);
     })->then (sub {
@@ -163,6 +127,7 @@ for my $signal (qw(INT TERM QUIT)) {
       } $c;
     })->catch (sub {
       warn $_[0];
+      warn "STDERR: |$stderr|";
       test { ok 0 } $c;
     })->then (sub {
       done $c;
@@ -175,7 +140,7 @@ run_tests;
 
 =head1 LICENSE
 
-Copyright 2015 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2017 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
