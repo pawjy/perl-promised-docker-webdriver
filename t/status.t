@@ -27,6 +27,9 @@ for my $browser (qw(chrome chromium firefox)) {
               $ok->();
             };
       });
+    })->catch (sub {
+      warn $_[0];
+      test { ok 0 } $c;
     })->then (sub {
       return $server->stop;
     })->then (sub {
