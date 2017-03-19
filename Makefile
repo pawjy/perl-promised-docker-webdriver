@@ -40,5 +40,4 @@ test: test-deps test-main
 test-deps: deps
 
 test-main:
-	./perl t/status.t
-	$(PROVE) t/*.t
+	TEST_MAX_CONCUR=1 $(PROVE) t/*.t

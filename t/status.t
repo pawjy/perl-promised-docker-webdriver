@@ -28,8 +28,11 @@ for my $browser (qw(chrome chromium firefox)) {
             };
       });
     })->catch (sub {
-      warn $_[0];
-      test { ok 0 } $c;
+      my $error = $_[0];
+      test {
+        ok 0, "No rejection";
+        is $error, undef, "Caught rejection";
+      } $c;
     })->then (sub {
       return $server->stop;
     })->then (sub {
