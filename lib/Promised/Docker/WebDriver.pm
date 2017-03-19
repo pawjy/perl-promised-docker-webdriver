@@ -31,7 +31,7 @@ sub firefox ($) {
     docker_image => 'quay.io/wakaba/firefoxdriver:stable',
     driver_command => '/fx-port',
     driver_args => ['%PORT%'],
-    path_prefix => '/wd/hub',
+    path_prefix => '',
   }, $_[0];
 } # firefox
 
