@@ -20,7 +20,6 @@ HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Headers::Util~6.11
 HTTP::Negotiate~6.01
-HTTP::Request~6.11
 HTTP::Response~6.11
 IO::HTML~1.001
 IO::Socket::SSL~2.047
@@ -30,6 +29,7 @@ LWP::UserAgent~6.24
 MIME::Base64~3.15
 Mozilla::CA~20160104
 Net::HTTP~6.13
+Net::HTTPS~6.13
 Net::SSLeay~1.81
 Object::Event~1.23
 Path::Class~0.37
@@ -39,8 +39,8 @@ Pod::Usage~1.69
 Scalar::Util~1.47
 Socket~2.024
 Term::ANSIColor~4.06
-Test::Builder~1.302078
 Test::Differences~0.64
+Test::More~1.302078
 Text::Diff~1.44
 Try::Tiny~0.28
 URI~1.71
