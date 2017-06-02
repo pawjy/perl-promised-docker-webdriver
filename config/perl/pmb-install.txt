@@ -2,7 +2,6 @@ Algorithm::Diff~1.1903
 AnyEvent~7.13
 AnyEvent::HTTP~2.23
 AnyEvent::HTTPD~0.93
-AnyEvent::Handle
 Canary::Stability~2012
 Capture::Tiny~0.46
 Carp~1.38
@@ -21,7 +20,7 @@ HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Headers~6.11
 HTTP::Negotiate~6.01
-HTTP::Response~6.11
+HTTP::Request~6.11
 IO::HTML~1.001
 IO::Socket::SSL~2.048
 LWP::MediaTypes~6.02
@@ -29,6 +28,7 @@ LWP::Protocol::https~6.07
 LWP::UserAgent~6.26
 MIME::Base64~3.15
 Mozilla::CA~20160104
+Net::HTTP~6.16
 Net::HTTPS~6.16
 Net::SSLeay~1.81
 Object::Event~1.23
@@ -39,11 +39,12 @@ Pod::Usage~1.69
 Scalar::Util~1.47
 Socket~2.024
 Term::ANSIColor~4.06
+Test::Builder~1.302085
 Test::Differences~0.64
-Test::More~1.302085
 Text::Diff~1.44
 Try::Tiny~0.28
 Types::Serialiser~1.0
 URI~1.71
+URI::Escape~3.31
 WWW::RobotRules~6.02
 common::sense~3.74
