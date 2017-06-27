@@ -2,6 +2,7 @@ Algorithm::Diff~1.1903
 AnyEvent~7.14
 AnyEvent::HTTP~2.23
 AnyEvent::HTTPD~0.93
+AnyEvent::Util
 Canary::Stability~2012
 Capture::Tiny~0.46
 Carp~1.38
@@ -28,6 +29,7 @@ LWP::UserAgent~6.26
 MIME::Base64~3.15
 Mozilla::CA~20160104
 Net::HTTP~6.16
+Net::HTTPS~6.16
 Net::SSLeay~1.81
 Object::Event~1.23
 Path::Class~0.37
@@ -40,6 +42,7 @@ Term::ANSIColor~4.06
 Test::Differences~0.64
 Test::More~1.302086
 Text::Diff~1.44
+Try::Tiny~0.28
 Types::Serialiser~1.0
 URI~1.71
 WWW::RobotRules~6.02
