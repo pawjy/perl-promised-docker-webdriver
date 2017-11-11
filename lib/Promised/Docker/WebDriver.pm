@@ -126,11 +126,14 @@ sub start ($) {
     s/%PORT%/$self->{port}/g;
   }
 
-  my $ip_cmd = Promised::Command->new (['sh', '-c', q{ip route | awk '/docker0/ { print $NF }'}]);
+  my $ip_cmd = Promised::Command->new ([qw{ip route list dev docker0}]);
   $ip_cmd->stdout (\my $ip);
   return $ip_cmd->run->then (sub { return $ip_cmd->wait })->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
-    chomp $ip if defined $ip;
+    my @ip = split /\s+/, $ip;
+    shift @ip;
+    my %ip = @ip;
+    $ip = $ip{src};
     die "Can't get docker0's IP address" unless defined $ip and $ip =~ /\A[0-9.]+\z/;
     $self->{docker_host_ipaddr} = $ip;
   })->then (sub {
