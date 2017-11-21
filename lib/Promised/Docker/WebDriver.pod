@@ -110,16 +110,6 @@ name can be used to construct the URL specified in the WebDriver API
 to let the browser access the server running on the host.  This method
 must be invoked after the C<start> promise is resolved.
 
-=item $string = $server->get_docker_host_hostname_for_host
-
-Return the host name (or an IP address, in fact) of the Docker host
-(the host where the Perl application is running) used in the Docker
-host.  This host name can be used to specify the interface the server
-process listens to only serve for the Docker containers (rather than
-specifying C<0.0.0.0> to allow accesses from all available
-interfaces).  This method must be invoked after the C<start> promise
-is resolved.
-
 =back
 
 During the server is running, signal handlers for C<SIGINT>,
@@ -153,7 +143,7 @@ Wakaba <wakaba@suikawiki.org>.
 
 =head1 LICENSE
 
-Copyright 2015-2016 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2017 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -16,7 +16,7 @@ test {
     my $cv = AE::cv;
     $server->start_timeout (500);
     $server->start->then (sub {
-      warn "\ncid=@{[$server->{container_id}]}\n";
+      warn "\ncid=@{[$server->{command}->{container_id}]}\n";
       exit 0;
     }, sub {
       exit 1;
@@ -37,8 +37,12 @@ test {
   })->then (sub {
     $stderr =~ /^cid=(\w+)$/m;
     my $cid = $1;
+    return promised_wait_until {
+      return not `docker ps --no-trunc | grep \Q$cid\E`;
+    } timeout => 30;
+  })->then (sub {
     test {
-      ok not `docker ps --no-trunc | grep \Q$cid\E`;
+      ok 1;
     } $c;
   })->catch (sub {
     warn $_[0];
@@ -48,7 +52,7 @@ test {
     done $c;
     undef $c;
   });
-} n => 2, timeout => 600;
+} n => 2, timeout => 600, name => 'destroy (exit)';
 
 test {
   my $c = shift;
@@ -59,7 +63,7 @@ test {
     my $cv = AE::cv;
     $server->start_timeout (500);
     $server->start->then (sub {
-      warn "\ncid=@{[$server->{container_id}]}\n";
+      warn "\ncid=@{[$server->{command}->{container_id}]}\n";
       $cv->send;
     }, sub {
       exit 1;
@@ -80,8 +84,12 @@ test {
   })->then (sub {
     $stderr =~ /^cid=(\w+)$/m;
     my $cid = $1;
+    return promised_wait_until {
+      return not `docker ps --no-trunc | grep \Q$cid\E`;
+    } timeout => 30;
+  })->then (sub {
     test {
-      ok not `docker ps --no-trunc | grep \Q$cid\E`;
+      ok 1;
     } $c;
   })->catch (sub {
     warn $_[0];
@@ -91,7 +99,7 @@ test {
     done $c;
     undef $c;
   });
-} n => 2, timeout => 600;
+} n => 2, timeout => 600, name => 'destroy';
 
 for my $signal (qw(INT TERM QUIT)) {
   test {
@@ -106,7 +114,7 @@ for my $signal (qw(INT TERM QUIT)) {
       my $sig3 = AE::signal TERM => sub { exit 1 };
       $server->start_timeout (500);
       $server->start->then (sub {
-        print STDERR "\ncid=@{[$server->{container_id}]}\n";
+        print STDERR "\ncid=@{[$server->{command}->{container_id}]}\n";
       }, sub {
         warn $_[0];
         exit 1;
@@ -125,8 +133,12 @@ for my $signal (qw(INT TERM QUIT)) {
     })->then (sub {
       $stderr =~ /^cid=(\w+)$/m;
       my $cid = $1;
+      return promised_wait_until {
+        return not `docker ps --no-trunc | grep \Q$cid\E`;
+      } timeout => 30;
+    })->then (sub {
       test {
-        ok not `docker ps --no-trunc | grep \Q$cid\E`;
+        ok 1;
       } $c;
     })->catch (sub {
       warn $_[0];

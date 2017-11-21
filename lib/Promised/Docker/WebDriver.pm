@@ -1,11 +1,11 @@
 package Promised::Docker::WebDriver;
 use strict;
 use warnings;
-our $VERSION = '1.0';
+our $VERSION = '2.0';
 use AnyEvent;
 use Promise;
-use Promised::Command;
-use Promised::Command::Signals;
+use Promised::Flow;
+use Promised::Command::Docker;
 
 sub chrome ($) {
   ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
@@ -64,47 +64,23 @@ sub firefox ($) {
 {
   use AnyEvent::Socket;
   use AnyEvent::Handle;
-  my $Interval = 0.5;
   sub _wait_server ($$$) {
     my ($hostname, $port, $timeout) = @_;
-
-    my $connect = sub {
+    return promised_wait_until {
       return Promise->new (sub {
         my ($ok, $ng) = @_;
         tcp_connect $hostname, $port, sub {
-          return $ng->($!) unless @_;
+          return $ok->(0) unless @_;
           my $hdl; $hdl = AnyEvent::Handle->new (
             fh => $_[0],
-            on_error => sub { $ng->($_[2]); undef $hdl; },
-            on_eof => sub { $ng->(); undef $hdl; },
+            on_error => sub { $ok->(0); undef $hdl; },
+            on_eof => sub { $ok->(0); undef $hdl; },
           );
-          $hdl->push_read (chunk => 4, sub { $ok->(); $_[0]->destroy; });
+          $hdl->push_read (chunk => 4, sub { $ok->(1); $_[0]->destroy; });
           $hdl->push_write ("HEAD / HTTP/1.1\x0D\x0AHost: $hostname:$port\x0D\x0A\x0D\x0A");
         };
       });
-    };
-
-    my ($ok, $ng);
-    my $p = Promise->new (sub { ($ok, $ng) = @_ });
-    my $try_count = 1;
-    my $try; $try = sub {
-      $connect->()->then (sub {
-        $ok->();
-        undef $try;
-      }, sub {
-        if ($try_count++ > $timeout / $Interval) {
-          $ng->("Server does not start in $timeout s");
-          undef $try;
-        } else {
-          my $timer; $timer = AE::timer $Interval, 0, sub {
-            $try->();
-            undef $timer;
-          };
-        }
-      });
-    }; # $try
-    $try->();
-    return $p;
+    } timeout => $timeout, interval => 0.5;
   } # _wait_server
 }
 
@@ -118,7 +94,6 @@ sub start_timeout ($;$) {
 sub start ($) {
   my $self = $_[0];
 
-  $self->{start_pid} = $$;
   $self->{port} = _find_port;
 
   my @args = @{$self->{driver_args}};
@@ -126,52 +101,27 @@ sub start ($) {
     s/%PORT%/$self->{port}/g;
   }
 
-  my $ip_cmd = Promised::Command->new ([qw{ip route list dev docker0}]);
-  $ip_cmd->stdout (\my $ip);
-  return $ip_cmd->run->then (sub { return $ip_cmd->wait })->then (sub {
-    die $_[0] unless $_[0]->exit_code == 0;
-    my @ip = split /\s+/, $ip;
-    shift @ip;
-    my %ip = @ip;
-    $ip = $ip{src};
-    die "Can't get docker0's IP address" unless defined $ip and $ip =~ /\A[0-9.]+\z/;
-    $self->{docker_host_ipaddr} = $ip;
-  })->then (sub {
-    my $cmd = Promised::Command->new ([
-      'docker', 'run', '-t', '-d',
-      '--add-host=dockerhost:' . $self->{docker_host_ipaddr},
+  $self->{command} = Promised::Command::Docker->new (
+    docker_run_options => [
       '-p', '127.0.0.1:'.$self->{port}.':'.$self->{port},
-      $self->{docker_image},
-      $self->{driver_command}, @args,
-    ]);
-    $cmd->stdout (\($self->{container_id} = ''));
-
-    $self->{running} = 1;
-    my $stop_code = sub { return $self->stop };
-    $self->{signal_handlers}->{$_} = Promised::Command::Signals->add_handler
-        ($_ => $stop_code) for qw(INT TERM QUIT);
-    return $cmd->run->then (sub {
-      return $cmd->wait;
-    })->then (sub {
-      die $_[0] unless $_[0]->exit_code == 0;
-      chomp $self->{container_id};
-      return _wait_server $self->get_hostname, $self->get_port, $self->start_timeout;
-    });
+    ],
+    image => $self->{docker_image},
+    command => [$self->{driver_command}, @args],
+    propagate_signal => 1,
+    signal_before_destruction => 1,
+  );
+  return $self->{command}->start->then (sub {
+    die $_[0] unless $_[0]->exit_code == 0;
+    return _wait_server $self->get_hostname, $self->get_port, $self->start_timeout;
   });
 } # start
 
 sub stop ($) {
   my $self = $_[0];
-  return Promise->resolve unless defined $self->{container_id};
+  return Promise->resolve unless defined $self->{command};
 
-  my $cmd = Promised::Command->new (['docker', 'kill', $self->{container_id}]);
-  $cmd->stdout (\my $stdout);
-  return $cmd->run->then (sub {
-    return $cmd->wait;
-  })->then (sub {
+  return $self->{command}->stop (signal => 'KILL')->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
-    delete $self->{signal_handlers};
-    delete $self->{running};
   });
 } # stop
 
@@ -193,27 +143,20 @@ sub get_url_prefix ($) {
 } # get_url_prefix
 
 sub get_docker_host_hostname_for_container ($) {
-  die "|run| not yet invoked" unless defined $_[0]->{port};
-  return 'dockerhost';
+  die "|run| not yet invoked" unless defined $_[0]->{command};
+  return $_[0]->{command}->dockerhost_host_for_container;
 } # get_docker_host_hostname_for_container
 
+# OBSOLETE
 sub get_docker_host_hostname_for_host ($) {
-  return $_[0]->{docker_host_ipaddr} // die "|run| not yet invoked";
-} # get_docker_host_hostname_for_host
-
-sub DESTROY ($) {
-  my $self = $_[0];
-  if ($self->{running} and
-      defined $self->{start_pid} and $self->{start_pid} == $$) {
-    $self->stop;
-  }
-} # DESTROY
+  return '0.0.0.0';
+}
 
 1;
 
 =head1 LICENSE
 
-Copyright 2015-2016 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2017 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
