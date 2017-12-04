@@ -75,6 +75,16 @@ when the server becomes ready to accept requests.
 
 This method must be invoked before the C<start> method is invoked.
 
+=item $boolean = $server->use_rtp
+
+=item $server->use_rtp ($boolean)
+
+Get or set whether the audio output should be exposed by RTP or not.
+This option is only applicable to a Docker image which supports this
+feature.
+
+This method must be invoked before the C<start> method is invoked.
+
 =item $int = $server->get_port
 
 Return the port number the server is listening.  This method must be
@@ -109,6 +119,16 @@ application is running) used within the Docker container.  This host
 name can be used to construct the URL specified in the WebDriver API
 to let the browser access the server running on the host.  This method
 must be invoked after the C<start> promise is resolved.
+
+=item $string = $server->get_rtp_hostname
+
+Return the host name of the RTP stream.  If not available, C<undef> is
+returned instead.
+
+=item $int = $server->get_rtp_port
+
+Return the port number of the RTP stream.  If not available, C<undef>
+is returned instead.
 
 =back
 
