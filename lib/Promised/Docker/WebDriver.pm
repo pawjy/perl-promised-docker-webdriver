@@ -119,7 +119,7 @@ sub start ($) {
   $self->{command} = Promised::Command::Docker->new (
     docker_run_options => [
       '-p', '127.0.0.1:'.$self->{port}.':'.$self->{port},
-      @opt;
+      @opt,
     ],
     image => $self->{docker_image},
     command => [$self->{driver_command}, @args],
