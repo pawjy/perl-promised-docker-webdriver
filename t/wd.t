@@ -80,12 +80,16 @@ for my $browser (qw(chrome chromium firefox)) {
       warn $_[0];
       test { ok 0 } $c;
     })->then (sub {
+      test {
+        is $server->get_rtp_port, undef;
+        is $server->get_rtp_hostname, undef;
+      } $c;
       return $server->stop;
     })->then (sub {
       done $c;
       undef $c;
     });
-  } n => 1, name => [$browser, 'access local server'], timeout => 600;
+  } n => 3, name => [$browser, 'access local server'], timeout => 600;
 
   test {
     my $c = shift;

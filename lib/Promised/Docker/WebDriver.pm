@@ -91,10 +91,25 @@ sub start_timeout ($;$) {
   return $_[0]->{start_timeout} || 10;
 } # start_timeout
 
+sub use_rtp ($;$) {
+  if (@_ > 1) {
+    $_[0]->{use_rtp} = $_[1];
+  }
+  return $_[0]->{use_rtp};
+} # use_rtp
+
 sub start ($) {
   my $self = $_[0];
 
   $self->{port} = _find_port;
+
+  my @opt;
+  if ($self->{use_rtp}) {
+    $self->{rtp_host} = '224.0.0.56';
+    $self->{rtp_port} = _find_port; # In fact this is wrong.
+    push @opt, '-e', 'WD_RTP_DEST=' . $self->{rtp_host};
+    push @opt, '-e', 'WD_RTP_PORT=' . $self->{rtp_port};
+  }
 
   my @args = @{$self->{driver_args}};
   for (@args) {
@@ -104,6 +119,7 @@ sub start ($) {
   $self->{command} = Promised::Command::Docker->new (
     docker_run_options => [
       '-p', '127.0.0.1:'.$self->{port}.':'.$self->{port},
+      @opt;
     ],
     image => $self->{docker_image},
     command => [$self->{driver_command}, @args],
@@ -141,6 +157,14 @@ sub get_host ($) {
 sub get_url_prefix ($) {
   return 'http://' . $_[0]->get_host . $_[0]->{path_prefix};
 } # get_url_prefix
+
+sub get_rtp_hostname ($) {
+  return $_[0]->{rtp_host}; # or undef
+} # get_rtp_hostname
+
+sub get_rtp_port ($) {
+  return $_[0]->{rtp_port}; # or undef
+} # get_rtp_port
 
 sub get_docker_host_hostname_for_container ($) {
   die "|run| not yet invoked" unless defined $_[0]->{command};
