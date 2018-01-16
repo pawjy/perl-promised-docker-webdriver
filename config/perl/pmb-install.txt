@@ -2,6 +2,7 @@ Algorithm::Diff~1.1903
 AnyEvent~7.14
 AnyEvent::HTTP~2.23
 AnyEvent::HTTPD~0.93
+AnyEvent::Util
 Canary::Stability~2012
 Capture::Tiny~0.46
 Carp~1.38
@@ -37,10 +38,9 @@ Pod::Usage~1.69
 Scalar::Util~1.49
 Socket~2.027
 Term::ANSIColor~4.06
-Test::Builder~1.302120
 Test::Differences~0.64
+Test::More~1.302120
 Text::Diff~1.45
-Try::Tiny~0.30
 Types::Serialiser~1.0
 URI~1.73
 WWW::RobotRules~6.02
