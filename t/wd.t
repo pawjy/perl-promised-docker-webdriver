@@ -67,6 +67,11 @@ for my $browser (qw(chrome chromium firefox)) {
           return post ("$url/session/$sid/execute", {
             script => q{ return document.documentElement.textContent },
             args => [],
+          })->catch (sub {
+            return post ("$url/session/$sid/execute/sync", {
+              script => q{ return document.documentElement.textContent },
+              args => [],
+            });
           });
         })->then (sub {
           my $value = $_[0]->{value};
