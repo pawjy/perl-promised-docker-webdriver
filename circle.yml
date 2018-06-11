@@ -7,7 +7,7 @@
                "background" : 1
             }
          },
-         "make deps"
+         "make test-deps"
       ]
    },
    "deployment" : {
