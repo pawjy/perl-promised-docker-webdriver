@@ -2,7 +2,6 @@ Algorithm::Diff~1.1903
 AnyEvent~7.14
 AnyEvent::HTTP~2.23
 AnyEvent::HTTPD~0.93
-AnyEvent::Socket
 Canary::Stability~2012
 Capture::Tiny~0.48
 Carp~1.38
@@ -21,8 +20,8 @@ HTTP::Daemon~6.01
 HTTP::Date~6.02
 HTTP::Negotiate~6.01
 HTTP::Request~6.18
+HTTP::Request::Common~6.18
 HTTP::Response~6.18
-HTTP::Status~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.059
 LWP::MediaTypes~6.02
@@ -41,8 +40,8 @@ Pod::Usage~1.69
 Scalar::Util~1.50
 Socket~2.027
 Term::ANSIColor~4.06
+Test::Builder~1.302140
 Test::Differences~0.64
-Test::More~1.302140
 Text::Diff~1.45
 Try::Tiny~0.30
 Types::Serialiser~1.0
