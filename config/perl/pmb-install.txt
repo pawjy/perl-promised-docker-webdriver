@@ -12,13 +12,14 @@ Exporter::Lite~0.08
 File::Listing~6.04
 File::Temp~0.2308
 Getopt::Long~2.5
-HTML::HeadParser~3.71
+HTML::Entities~3.69
 HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.01
 HTTP::Date~6.02
+HTTP::Headers~6.18
 HTTP::Negotiate~6.01
-HTTP::Status~6.18
+HTTP::Request::Common~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.060
 LWP::MediaTypes~6.02
@@ -26,7 +27,7 @@ LWP::Protocol::https~6.07
 LWP::UserAgent~6.35
 MIME::Base64~3.15
 Mozilla::CA~20180117
-Net::HTTPS~6.18
+Net::HTTP~6.18
 Net::SSLeay~1.85
 Object::Event~1.23
 Path::Class~0.37
@@ -36,9 +37,10 @@ Pod::Usage~1.69
 Scalar::Util~1.50
 Socket~2.027
 Term::ANSIColor~4.06
+Test::Builder~1.302140
 Test::Differences~0.64
-Test::More~1.302140
 Text::Diff~1.45
+Try::Tiny~0.30
 Types::Serialiser~1.0
 URI~1.74
 WWW::RobotRules~6.02
