@@ -2,6 +2,7 @@ Algorithm::Diff~1.1903
 AnyEvent~7.14
 AnyEvent::HTTP~2.24
 AnyEvent::HTTPD~0.93
+AnyEvent::Util
 Canary::Stability~2012
 Capture::Tiny~0.48
 Carp~1.50
@@ -12,14 +13,13 @@ Exporter::Lite~0.08
 File::Listing~6.04
 File::Temp~0.2309
 Getopt::Long~2.5
-HTML::HeadParser~3.71
+HTML::Entities~3.69
 HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.01
 HTTP::Date~6.02
-HTTP::Headers~6.18
 HTTP::Negotiate~6.01
-HTTP::Request::Common~6.18
+HTTP::Request~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.060
 LWP::MediaTypes~6.02
@@ -37,8 +37,8 @@ Pod::Usage~1.69
 Scalar::Util~1.50
 Socket~2.027
 Term::ANSIColor~4.06
-Test::Builder~1.302162
 Test::Differences~0.64
+Test::More~1.302162
 Text::Diff~1.45
 Types::Serialiser~1.0
 URI~1.76
