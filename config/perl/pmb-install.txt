@@ -21,7 +21,7 @@ HTTP::Cookies~6.04
 HTTP::Daemon~6.04
 HTTP::Date~6.02
 HTTP::Negotiate~6.01
-HTTP::Status~6.18
+HTTP::Request::Common~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.066
 LWP::MediaTypes~6.04
