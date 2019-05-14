@@ -98,13 +98,13 @@ sub use_rtp ($;$) {
   return $_[0]->{use_rtp};
 } # use_rtp
 
-sub start ($) {
-  my $self = $_[0];
+sub start ($;%) {
+  my ($self, %args) = @_;
+
+  $self->{hostname} = defined $args{host} ? $args{host}->to_ascii : '127.0.0.1';
+  $self->{port} = defined $args{port} ? 0+$args{port} : _find_port;
 
   ($self->{completed}, $self->{send_completed}) = promised_cv;
-
-  $self->{hostname} = '127.0.0.1';
-  $self->{port} = _find_port;
 
   my @opt;
   if ($self->{use_rtp}) {
