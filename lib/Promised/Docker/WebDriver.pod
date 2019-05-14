@@ -54,11 +54,18 @@ with Firefox stable release browser. (See
 
 =item $promise = $server->start
 
-Return a L<Promise>, which is resolved after the WebDriver API server
-is ready to accept HTTP requests.  The promise is rejected if the
-server failed to start.
+Start a Docker container and return a L<Promise>, which is resolved
+after the WebDriver API server is ready to accept HTTP requests.  The
+promise is rejected if the server failed to start.
 
 =item $promise = $server->stop
+
+Stop the Docker container and return a L<Promise>, which is resolved
+after the Docker container is stopped.
+
+This method must be invoked after the L<start> method is resolved.
+
+=item $promise = $server->completed
 
 Return a L<Promise>, which is resolved after the Docker container is
 stopped.
@@ -163,7 +170,7 @@ Wakaba <wakaba@suikawiki.org>.
 
 =head1 LICENSE
 
-Copyright 2015-2017 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2019 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

@@ -1,7 +1,7 @@
 package Promised::Docker::WebDriver;
 use strict;
 use warnings;
-our $VERSION = '2.0';
+our $VERSION = '3.0';
 use AnyEvent;
 use Promise;
 use Promised::Flow;
@@ -101,6 +101,8 @@ sub use_rtp ($;$) {
 sub start ($) {
   my $self = $_[0];
 
+  ($self->{completed}, $self->{send_completed}) = promised_cv;
+
   $self->{port} = _find_port;
 
   my @opt;
@@ -136,10 +138,15 @@ sub stop ($) {
   my $self = $_[0];
   return Promise->resolve unless defined $self->{command};
 
+  my $s = delete $self->{send_completed} || sub { };
   return $self->{command}->stop (signal => 'KILL')->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
-  });
+  })->finally ($s);
 } # stop
+
+sub completed ($) {
+  return $_[0]->{completed} // die "|run| not yet invoked";
+} # completed
 
 sub get_port ($) {
   return $_[0]->{port} // die "|run| not yet invoked";
@@ -176,11 +183,15 @@ sub get_docker_host_hostname_for_host ($) {
   return '0.0.0.0';
 }
 
+sub DESTROY ($) {
+  $_[0]->stop;
+} # DESTROY
+
 1;
 
 =head1 LICENSE
 
-Copyright 2015-2017 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2019 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
