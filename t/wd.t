@@ -89,6 +89,10 @@ for my $browser (qw(chrome chromium firefox)) {
       test { ok 0 } $c;
     })->then (sub {
       test {
+        is $server->get_hostname, '127.0.0.1';
+        ok $server->get_port;
+        is $server->get_host, '127.0.0.1:' . $server->get_port;
+        is $server->get_url_prefix, 'http://' . $server->get_host;
         is $server->get_rtp_port, undef;
         is $server->get_rtp_hostname, undef;
         isa_ok $server->completed, 'Promise';
@@ -117,7 +121,7 @@ for my $browser (qw(chrome chromium firefox)) {
       done $c;
       undef $c;
     });
-  } n => 8, name => [$browser, 'access local server'], timeout => 600;
+  } n => 12, name => [$browser, 'access local server'], timeout => 600;
 
   test {
     my $c = shift;
