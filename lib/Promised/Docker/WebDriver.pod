@@ -52,11 +52,29 @@ with Firefox stable release browser. (See
 <https://github.com/wakaba/docker-firefoxdriver> and
 <https://registry.hub.docker.com/u/wakaba/docker-firefoxdriver/>.)
 
-=item $promise = $server->start
+=item $promise = $server->start (NAME => VALUE, ...)
 
 Start a Docker container and return a L<Promise>, which is resolved
 after the WebDriver API server is ready to accept HTTP requests.  The
 promise is rejected if the server failed to start.
+
+Following options can be specified as zero or more name/value pairs:
+
+=over 4
+
+=item host => $host
+
+A L<Web::Host> object (in the
+<https://github.com/manakai/perl-web-url> repository) that represents
+the IP address the WebDriver server should listen.  If omitted,
+defaulted to an IPv4 address C<127.0.0.1>.
+
+=item port => $port
+
+An integer that represents the TCP port the WebDriver server should
+listen.  If omitted, defaulted to an unused port.
+
+=back
 
 =item $promise = $server->stop
 
@@ -97,14 +115,10 @@ This method must be invoked before the C<start> method is invoked.
 Return the port number the WebDriver server is listening.  This method
 must be invoked after the C<start> promise is resolved.
 
-A random unused port is assigned for the server.
-
 =item $string = $server->get_hostname
 
 Return the host name the WebDriver server is listening, as a string.
 This method must be invoked after the C<start> promise is resolved.
-
-In the current version, it is always C<127.0.0.1>.
 
 =item $string = $server->get_host
 
