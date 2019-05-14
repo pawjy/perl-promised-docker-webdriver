@@ -6,6 +6,7 @@ use Test::More;
 use Test::X1;
 use JSON::PS;
 use Promise;
+use Promised::Flow;
 use Promised::Docker::WebDriver;
 use Web::UserAgent::Functions qw(http_post_data);
 use AnyEvent::HTTPD;
@@ -41,6 +42,8 @@ for my $browser (qw(chrome chromium firefox)) {
   test {
     my $c = shift;
     my $server = Promised::Docker::WebDriver->$browser;
+    my $done = 0;
+    my $failed = 0;
     $server->start_timeout (500);
     $server->start->then (sub {
       my $url = $server->get_url_prefix;
@@ -88,13 +91,33 @@ for my $browser (qw(chrome chromium firefox)) {
       test {
         is $server->get_rtp_port, undef;
         is $server->get_rtp_hostname, undef;
+        isa_ok $server->completed, 'Promise';
+        $server->completed->then (sub {
+          $done++;
+        }, sub {
+          $failed++;
+        });
+        return undef;
       } $c;
-      return $server->stop;
+    })->then (sub {
+      return Promise->resolve->then (sub {
+        test {
+          is $done, 0;
+          is $failed, 0;
+        } $c;
+      })->then (sub {
+        return $server->stop;
+      });
+    })->then (sub {
+      test {
+        is $done, 1;
+        is $failed, 0;
+      } $c;
     })->then (sub {
       done $c;
       undef $c;
     });
-  } n => 3, name => [$browser, 'access local server'], timeout => 600;
+  } n => 8, name => [$browser, 'access local server'], timeout => 600;
 
   test {
     my $c = shift;
@@ -113,7 +136,7 @@ run_tests;
 
 =head1 LICENSE
 
-Copyright 2015 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2019 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
