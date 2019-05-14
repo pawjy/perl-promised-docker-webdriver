@@ -103,6 +103,7 @@ sub start ($) {
 
   ($self->{completed}, $self->{send_completed}) = promised_cv;
 
+  $self->{hostname} = '127.0.0.1';
   $self->{port} = _find_port;
 
   my @opt;
@@ -120,7 +121,7 @@ sub start ($) {
 
   $self->{command} = Promised::Command::Docker->new (
     docker_run_options => [
-      '-p', '127.0.0.1:'.$self->{port}.':'.$self->{port},
+      '-p', $self->{hostname}.':'.$self->{port}.':'.$self->{port},
       @opt,
     ],
     image => $self->{docker_image},
@@ -154,7 +155,7 @@ sub get_port ($) {
 
 sub get_hostname ($) {
   die "|run| not yet invoked" unless defined $_[0]->{port};
-  return '127.0.0.1';
+  return $_[0]->{hostname};
 } # get_hostname
 
 sub get_host ($) {

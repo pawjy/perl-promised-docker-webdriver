@@ -94,23 +94,23 @@ This method must be invoked before the C<start> method is invoked.
 
 =item $int = $server->get_port
 
-Return the port number the server is listening.  This method must be
-invoked after the C<start> promise is resolved.
+Return the port number the WebDriver server is listening.  This method
+must be invoked after the C<start> promise is resolved.
 
 A random unused port is assigned for the server.
 
 =item $string = $server->get_hostname
 
-Return the host name the server is listening.  This method must be
-invoked after the C<start> promise is resolved.
+Return the host name the WebDriver server is listening, as a string.
+This method must be invoked after the C<start> promise is resolved.
 
 In the current version, it is always C<127.0.0.1>.
 
 =item $string = $server->get_host
 
-Return the host name, followed by C<:>, followed by the port the
-server is listening.  This method must be invoked after the C<start>
-promise is resolved.
+Return a string that is equivalent to C<< $server->get_hostname . ':'
+. $server->get_port >>.  This method must be invoked after the
+C<start> promise is resolved.
 
 =item $url = $server->get_url_prefix
 
