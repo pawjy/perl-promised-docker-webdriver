@@ -21,7 +21,6 @@ HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.04
 HTTP::Date~6.02
-HTTP::Headers~6.18
 HTTP::Negotiate~6.01
 HTTP::Response~6.18
 IO::HTML~1.001
@@ -44,8 +43,8 @@ Scalar::Util~1.50
 Socket~2.029
 TAP::Harness::Env~3.42
 Term::ANSIColor~4.06
-Test::Builder~1.302164
 Test::Differences~0.67
+Test::More~1.302164
 Test::Needs~0.002006
 Text::Diff~1.45
 Try::Tiny~0.30
