@@ -15,13 +15,15 @@ ExtUtils::InstallPaths~0.012
 File::Listing~6.04
 File::Temp~0.2309
 Getopt::Long~2.5
+HTML::Entities~3.69
 HTML::HeadParser~3.71
 HTML::Tagset~3.20
 HTTP::Cookies~6.04
 HTTP::Daemon~6.04
 HTTP::Date~6.02
-HTTP::Headers~6.18
+HTTP::Headers::Util~6.18
 HTTP::Negotiate~6.01
+HTTP::Request::Common~6.18
 IO::HTML~1.001
 IO::Socket::SSL~2.066
 LWP::MediaTypes~6.04
@@ -31,6 +33,7 @@ MIME::Base64~3.15
 Module::Build::Tiny~0.039
 Mozilla::CA~20180117
 Net::HTTP~6.19
+Net::HTTPS~6.19
 Net::SSLeay~1.88
 Object::Event~1.23
 Path::Class~0.37
@@ -41,10 +44,11 @@ Scalar::Util~1.50
 Socket~2.029
 TAP::Harness::Env~3.42
 Term::ANSIColor~4.06
-Test::Builder~1.302164
 Test::Differences~0.67
+Test::More~1.302164
 Test::Needs~0.002006
 Text::Diff~1.45
+Try::Tiny~0.30
 Types::Serialiser~1.0
 URI~1.76
 WWW::RobotRules~6.02
