@@ -142,6 +142,7 @@ sub stop ($) {
   my $s = delete $self->{send_completed} || sub { };
   return $self->{command}->stop (signal => 'KILL')->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
+    delete $self->{command};
   })->finally ($s);
 } # stop
 
