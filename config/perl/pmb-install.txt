@@ -23,9 +23,7 @@ HTTP::Daemon~6.06
 HTTP::Date~6.05
 HTTP::Headers~6.18
 HTTP::Negotiate~6.01
-HTTP::Request~6.18
-HTTP::Request::Common~6.18
-HTTP::Status~6.18
+HTTP::Response~6.18
 IO::HTML~1.001
 IO::Socket::IP~0.39
 IO::Socket::SSL~2.066
@@ -36,6 +34,7 @@ MIME::Base64~3.15
 Module::Build::Tiny~0.039
 Mozilla::CA~20180117
 Net::HTTP~6.19
+Net::HTTPS~6.19
 Net::SSLeay~1.88
 Object::Event~1.23
 Path::Class~0.37
@@ -46,8 +45,8 @@ Scalar::Util~1.53
 Socket~2.029
 TAP::Harness::Env~3.42
 Term::ANSIColor~4.06
+Test::Builder~1.302170
 Test::Differences~0.67
-Test::More~1.302170
 Test::Needs~0.002006
 Text::Diff~1.45
 Time::Local~1.28
