@@ -25,8 +25,6 @@ HTTP::Date~6.05
 HTTP::Headers~6.18
 HTTP::Negotiate~6.01
 HTTP::Request::Common~6.18
-HTTP::Response~6.18
-HTTP::Status~6.18
 IO::HTML~1.001
 IO::Socket::IP~0.39
 IO::Socket::SSL~2.066
@@ -36,7 +34,6 @@ LWP::UserAgent~6.43
 MIME::Base64~3.15
 Module::Build::Tiny~0.039
 Mozilla::CA~20180117
-Net::HTTP~6.19
 Net::HTTPS~6.19
 Net::SSLeay~1.88
 Object::Event~1.23
@@ -57,6 +54,5 @@ Time::Zone~2.24
 Try::Tiny~0.30
 Types::Serialiser~1.0
 URI~1.76
-URI::Escape~3.31
 WWW::RobotRules~6.02
 common::sense~3.74
