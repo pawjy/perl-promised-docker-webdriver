@@ -11,6 +11,7 @@ sub chrome ($) {
   ## ChromeDriver: <https://code.google.com/p/chromium/codesearch#chromium/src/chrome/test/chromedriver/server/chromedriver_server.cc&sq=package:chromium>
   return bless {
     docker_image => 'quay.io/wakaba/chromedriver:stable',
+    docker_args => [],
     driver_command => '/cd-bare',
     driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
@@ -20,6 +21,7 @@ sub chrome ($) {
 sub chromium ($) {
   return bless {
     docker_image => 'quay.io/wakaba/chromedriver:chromium',
+    docker_args => [],
     driver_command => '/cd-bare',
     driver_args => ['--port=%PORT%', '--whitelisted-ips'],
     path_prefix => '',
@@ -29,6 +31,7 @@ sub chromium ($) {
 sub firefox ($) {
   return bless {
     docker_image => 'quay.io/wakaba/firefoxdriver:stable',
+    docker_args => [],
     driver_command => '/fx-port',
     driver_args => ['%PORT%'],
     path_prefix => '',
@@ -98,6 +101,27 @@ sub use_rtp ($;$) {
   return $_[0]->{use_rtp};
 } # use_rtp
 
+sub hls_path ($;$) {
+  if (@_ > 1) {
+    $_[0]->{hls_path} = $_[1];
+  }
+  return $_[0]->{hls_path};
+} # hls_path
+
+sub video_path ($;$) {
+  if (@_ > 1) {
+    $_[0]->{video_path} = $_[1];
+  }
+  return $_[0]->{video_path};
+} # video_path
+
+sub docker_args ($;$) {
+  if (@_ > 1) {
+    $_[0]->{docker_args} = $_[1] || [];
+  }
+  return $_[0]->{docker_args};
+} # docker_args
+
 sub start ($;%) {
   my ($self, %args) = @_;
 
@@ -113,6 +137,11 @@ sub start ($;%) {
     push @opt, '-e', 'WD_RTP_DEST=' . $self->{rtp_host};
     push @opt, '-e', 'WD_RTP_PORT=' . $self->{rtp_port};
   }
+  if (defined $self->{hls_path}) {
+    push @opt, '-e', 'WD_HLS_PATH=' . $self->{hls_path};
+  } elsif (defined $self->{video_path}) {
+    push @opt, '-e', 'WD_VIDEO_PATH=' . $self->{video_path};
+  }
 
   my @args = @{$self->{driver_args}};
   for (@args) {
@@ -122,6 +151,7 @@ sub start ($;%) {
   $self->{command} = Promised::Command::Docker->new (
     docker_run_options => [
       '-p', $self->{hostname}.':'.$self->{port}.':'.$self->{port},
+      @{$self->{docker_args}},
       @opt,
     ],
     image => $self->{docker_image},
@@ -140,7 +170,7 @@ sub stop ($) {
   return Promise->resolve unless defined $self->{command};
 
   my $s = delete $self->{send_completed} || sub { };
-  return $self->{command}->stop (signal => 'KILL')->then (sub {
+  return $self->{command}->stop->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
     delete $self->{command};
   })->finally ($s);
@@ -193,7 +223,7 @@ sub DESTROY ($) {
 
 =head1 LICENSE
 
-Copyright 2015-2019 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2020 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
