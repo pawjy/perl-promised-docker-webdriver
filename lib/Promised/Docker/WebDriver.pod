@@ -110,6 +110,34 @@ feature.
 
 This method must be invoked before the C<start> method is invoked.
 
+=item $string? = $server->hls_path
+
+=item $server->hls_path ($string?)
+
+Get or set the C<WD_HLS_PATH> environment variable within the docker
+container.  This option is only applicable to a Docker image which
+supports this feature.
+
+This method must be invoked before the C<start> method is invoked.
+
+=item $string? = $server->video_path
+
+=item $server->video_path ($string?)
+
+Get or set the C<WD_VIDEO_PATH> environment variable within the docker
+container.  This option is only applicable to a Docker image which
+supports this feature.
+
+This method must be invoked before the C<start> method is invoked.
+
+=item $arrayref = $server->docker_args
+
+=item $server->docker_args ($arrayref)
+
+Get or set the additional arguments to the C<docker run> command.
+
+This method must be invoked before the C<start> method is invoked.
+
 =item $int = $server->get_port
 
 Return the port number the WebDriver server is listening.  This method
@@ -184,7 +212,7 @@ Wakaba <wakaba@suikawiki.org>.
 
 =head1 LICENSE
 
-Copyright 2015-2019 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2020 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
