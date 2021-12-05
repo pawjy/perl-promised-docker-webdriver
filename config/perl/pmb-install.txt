@@ -20,13 +20,12 @@ HTTP::Cookies~6.10
 HTTP::Date~6.05
 HTTP::Headers~6.35
 HTTP::Negotiate~6.01
-HTTP::Request::Common~6.35
 IO::HTML~1.004
 IO::Socket::SSL~2.072
 LWP::MediaTypes~6.04
-LWP::Protocol::http~6.58
+LWP::Protocol::http~6.59
 LWP::Protocol::https~6.10
-LWP::UserAgent~6.58
+LWP::UserAgent~6.59
 MIME::Base64~3.16
 Mozilla::CA~20211001
 Net::HTTP~6.21
