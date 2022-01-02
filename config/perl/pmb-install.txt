@@ -2,6 +2,7 @@ Algorithm::Diff~1.201
 AnyEvent~7.17
 AnyEvent::HTTP~2.25
 AnyEvent::HTTPD~0.93
+AnyEvent::Handle
 Canary::Stability~2013
 Capture::Tiny~0.48
 Carp~1.50
@@ -12,12 +13,13 @@ Exporter::Lite~0.08
 File::Listing~6.14
 File::Temp~0.2311
 Getopt::Long~2.52
+HTML::Entities~3.76
 HTML::HeadParser~3.76
 HTML::Tagset~3.20
 HTTP::Cookies~6.10
 HTTP::Date~6.05
+HTTP::Headers~6.35
 HTTP::Negotiate~6.01
-HTTP::Request~6.35
 HTTP::Response~6.35
 HTTP::Status~6.35
 IO::HTML~1.004
@@ -33,9 +35,7 @@ Net::SSLeay~1.90
 Object::Event~1.23
 Path::Class~0.37
 Path::Tiny~0.120
-Pod::Perldoc~3.28
 Pod::Simple~3.43
-Pod::Text~4.14
 Pod::Usage~2.01
 Scalar::Util~1.60
 Socket~2.032
@@ -43,11 +43,9 @@ Term::ANSIColor~5.01
 Test::Builder~1.302188
 Test::Differences~0.68
 Text::Diff~1.45
-Time::Local~1.30
 Time::Zone~2.24
 Try::Tiny~0.31
 Types::Serialiser~1.01
 URI~5.10
-URI::Escape~5.10
 WWW::RobotRules~6.02
 common::sense~3.75
