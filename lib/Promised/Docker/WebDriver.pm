@@ -13,7 +13,8 @@ sub chrome ($) {
     docker_image => 'quay.io/wakaba/chromedriver:stable',
     docker_args => [],
     driver_command => '/cd-bare',
-    driver_args => ['--port=%PORT%', '--whitelisted-ips'],
+    driver_args => ['--port=%PORT%', '--whitelisted-ips',
+                    '--allowed-origins=*'],
     path_prefix => '',
   }, $_[0];
 } # chrome
@@ -23,7 +24,8 @@ sub chromium ($) {
     docker_image => 'quay.io/wakaba/chromedriver:chromium',
     docker_args => [],
     driver_command => '/cd-bare',
-    driver_args => ['--port=%PORT%', '--whitelisted-ips'],
+    driver_args => ['--port=%PORT%', '--whitelisted-ips',
+                    '--allowed-origins=*'],
     path_prefix => '',
   }, $_[0];
 } # chromium
@@ -223,7 +225,7 @@ sub DESTROY ($) {
 
 =head1 LICENSE
 
-Copyright 2015-2020 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2022 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.
