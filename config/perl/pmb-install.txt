@@ -2,7 +2,6 @@ Algorithm::Diff~1.201
 AnyEvent~7.17
 AnyEvent::HTTP~2.25
 AnyEvent::HTTPD~0.93
-AnyEvent::Handle
 Canary::Stability~2013
 Capture::Tiny~0.48
 Carp~1.50
@@ -18,6 +17,7 @@ HTML::HeadParser~3.76
 HTML::Tagset~3.20
 HTTP::Cookies~6.10
 HTTP::Date~6.05
+HTTP::Headers~6.36
 HTTP::Negotiate~6.01
 HTTP::Request~6.36
 IO::HTML~1.004
@@ -38,8 +38,8 @@ Pod::Usage~2.01
 Scalar::Util~1.61
 Socket~2.032
 Term::ANSIColor~5.01
+Test::Builder~1.302190
 Test::Differences~0.69
-Test::More~1.302190
 Text::Diff~1.45
 Time::Zone~2.24
 Try::Tiny~0.31
