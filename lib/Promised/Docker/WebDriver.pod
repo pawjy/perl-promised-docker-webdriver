@@ -33,24 +33,21 @@ Following methods are available:
 Create a new instance for the docker image
 "wakaba/docker-chromedriver:stable", which contains ChromeDriver with
 Chrome stable channel browser. (See
-<https://github.com/wakaba/docker-chromedriver> and
-<https://registry.hub.docker.com/u/wakaba/docker-chromedriver/>.)
+<https://github.com/wakaba/docker-chromedriver>.)
 
 =item $server = Promised::Docker::WebDriver->chromium
 
 Create a new instance for the docker image
 "wakaba/docker-chromedriver:chromium", which contains ChromeDriver
 with Chromium browser. (See
-<https://github.com/wakaba/docker-chromedriver> and
-<https://registry.hub.docker.com/u/wakaba/docker-chromedriver/>.)
+<https://github.com/wakaba/docker-chromedriver>.)
 
 =item $server = Promised::Docker::WebDriver->firefox
 
 Create a new instance for the docker image
 "wakaba/docker-firefoxdriver:stable", which contains FirefoxDriver
 with Firefox stable release browser. (See
-<https://github.com/wakaba/docker-firefoxdriver> and
-<https://registry.hub.docker.com/u/wakaba/docker-firefoxdriver/>.)
+<https://github.com/wakaba/docker-firefoxdriver>.)
 
 =item $promise = $server->start (NAME => VALUE, ...)
 
@@ -204,15 +201,24 @@ Obviously, Docker is also required.
 Docker <https://www.docker.com/>.
 
 The WebDriver Wire Protocol
-<https://code.google.com/p/selenium/wiki/JsonWireProtocol>.
+<https://web.archive.org/web/20160205035909/https://code.google.com/p/selenium/wiki/JsonWireProtocol>.
+
+WebDriver <https://w3c.github.io/webdriver/webdriver-spec.html>.
 
 =head1 AUTHOR
 
 Wakaba <wakaba@suikawiki.org>.
 
+=head1 HISTORY
+
+This repository was located at
+<https://github.com/wakaba/perl-promised-docker-webdriver> until 19
+April 2023, then transferred to
+<https://github.com/pawjy/perl-promised-docker-webdriver>.
+
 =head1 LICENSE
 
-Copyright 2015-2022 Wakaba <wakaba@suikawiki.org>.
+Copyright 2015-2023 Wakaba <wakaba@suikawiki.org>.
 
 This library is free software; you can redistribute it and/or modify
 it under the same terms as Perl itself.

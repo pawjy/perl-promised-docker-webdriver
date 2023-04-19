@@ -127,7 +127,7 @@ sub docker_args ($;$) {
 sub start ($;%) {
   my ($self, %args) = @_;
 
-  $self->{hostname} = defined $args{host} ? $args{host}->to_ascii : '127.0.0.1';
+  $self->{hostname} = defined $args{host} ? $args{host}->to_ascii : undef;
   $self->{port} = defined $args{port} ? 0+$args{port} : _find_port;
 
   ($self->{completed}, $self->{send_completed}) = promised_cv;
@@ -152,7 +152,7 @@ sub start ($;%) {
 
   $self->{command} = Promised::Command::Docker->new (
     docker_run_options => [
-      '-p', $self->{hostname}.':'.$self->{port}.':'.$self->{port},
+      (defined $self->{hostname} ? ('-p', $self->{hostname}.':'.$self->{port}.':'.$self->{port}) : ()),
       @{$self->{docker_args}},
       @opt,
     ],
@@ -163,6 +163,12 @@ sub start ($;%) {
   );
   return $self->{command}->start->then (sub {
     die $_[0] unless $_[0]->exit_code == 0;
+    if (not defined $self->{hostname}) {
+      return $self->{command}->get_container_ipaddr->then (sub {
+        $self->{hostname} = $_[0];
+      });
+    }
+  })->then (sub {
     return _wait_server $self->get_hostname, $self->get_port, $self->start_timeout;
   });
 } # start

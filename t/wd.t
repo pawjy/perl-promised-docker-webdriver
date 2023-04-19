@@ -94,9 +94,11 @@ for my $browser (qw(chrome chromium firefox)) {
       test { ok 0 } $c;
     })->then (sub {
       test {
-        is $server->get_hostname, '127.0.0.1';
+        my $host = $server->get_hostname;
+        #is $server->get_hostname, '127.0.0.1';
+        ok $host =~ m{^[0-9]+\.[0-9]+\.[0-9]+\.[0-9]+$}, $host;
         ok $server->get_port;
-        is $server->get_host, '127.0.0.1:' . $server->get_port;
+        is $server->get_host, $host.':' . $server->get_port;
         is $server->get_url_prefix, 'http://' . $server->get_host;
         is $server->get_rtp_port, undef;
         is $server->get_rtp_hostname, undef;
