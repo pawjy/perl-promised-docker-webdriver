@@ -13,14 +13,13 @@ Exporter::Lite~0.09
 File::Listing~6.15
 File::Temp~0.2311
 Getopt::Long~2.54
-HTML::Entities~3.81
 HTML::HeadParser~3.81
 HTML::Tagset~3.20
 HTTP::Cookies~6.10
 HTTP::Date~6.05
-HTTP::Headers~6.44
 HTTP::Negotiate~6.01
-HTTP::Response~6.44
+HTTP::Request::Common~6.44
+HTTP::Status~6.44
 IO::HTML~1.004
 IO::Socket::SSL~2.081
 LWP::MediaTypes~6.04
@@ -28,7 +27,7 @@ LWP::Protocol::https~6.10
 LWP::UserAgent~6.68
 MIME::Base64~3.16
 Mozilla::CA~20221114
-Net::HTTP~6.22
+Net::HTTPS~6.22
 Net::SSLeay~1.92
 Object::Event~1.23
 Path::Class~0.37
@@ -41,7 +40,6 @@ Test::Builder~1.302194
 Test::Differences~0.69
 Text::Diff~1.45
 Time::Zone~2.24
-Try::Tiny~0.31
 Types::Serialiser~1.01
 URI~5.17
 WWW::RobotRules~6.02
