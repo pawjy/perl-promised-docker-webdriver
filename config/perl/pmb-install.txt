@@ -20,6 +20,7 @@ HTTP::Cookies~6.10
 HTTP::Date~6.05
 HTTP::Headers::Util~6.44
 HTTP::Negotiate~6.01
+HTTP::Request::Common~6.44
 IO::HTML~1.004
 IO::Socket::SSL~2.083
 LWP::MediaTypes~6.04
