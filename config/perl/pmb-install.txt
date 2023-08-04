@@ -2,7 +2,7 @@ Algorithm::Diff~1.201
 AnyEvent~7.17
 AnyEvent::HTTP~2.25
 AnyEvent::HTTPD~0.93
-AnyEvent::Util
+AnyEvent::Socket
 Canary::Stability~2013
 Capture::Tiny~0.48
 Carp~1.50
@@ -14,7 +14,6 @@ Exporter::Lite~0.09
 File::Listing~6.16
 File::Temp~0.2311
 Getopt::Long~2.54
-HTML::Entities~3.81
 HTML::HeadParser~3.81
 HTML::Tagset~3.20
 HTTP::CookieJar::LWP~0.014
@@ -30,7 +29,6 @@ LWP::UserAgent~6.72
 MIME::Base64~3.16
 Mozilla::CA~20230801
 Net::HTTP~6.23
-Net::HTTPS~6.23
 Net::SSLeay~1.92
 Object::Event~1.23
 Path::Class~0.37
